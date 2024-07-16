@@ -55,8 +55,8 @@ class ChildSerializer(serializers.ModelSerializer):
         return child
 
     def update(self, instance, validated_data):
-        user_data = validated_data.pop('user')
-        parent_username = validated_data.pop('parent', None)  # Retrieve parent username from validated data if provided
+        user_data = validated_data.pop('user', {})
+        parent_username = validated_data.pop('parent', None)
 
         # Update Child fields
         instance.disability = validated_data.get('disability', instance.disability)
@@ -71,12 +71,6 @@ class ChildSerializer(serializers.ModelSerializer):
         user.first_name = user_data.get('first_name', user.first_name)
         user.last_name = user_data.get('last_name', user.last_name)
         user.save()
-
-        # Update Parent if provided
-        if parent_username:
-            parent = Parent.objects.get(user__username=parent_username)
-            instance.parent = parent
-            instance.save()
 
         return instance
 
