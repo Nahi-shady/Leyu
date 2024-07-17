@@ -111,13 +111,17 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Course
-        fields = ['id', 'title', 'image', 'description', 'duration', 'difficulty_level']
+        model = Category
+        fields = ['id', 'name', 'image', 'description']
 
 class CourseSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)  # Use the nested serializer for read operations
+    category_name = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), source='category', write_only=True
+    )  
     class Meta:
         model = Course
-        fields = ['id', 'title', 'image', 'description', 'duration', 'difficulty_level']
+        fields = ['id', 'title', 'image', 'description', 'category', 'category_name', 'duration', 'difficulty_level']
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:

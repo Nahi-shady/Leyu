@@ -47,6 +47,9 @@ class Category(models.Model):
     description = models.CharField(max_length=255)
     image = models.ImageField(upload_to='category/', blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
 
 class Course(models.Model):
     levels = [

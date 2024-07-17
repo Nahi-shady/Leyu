@@ -7,6 +7,7 @@ router.register(r'children', ChildViewSet)
 router.register(r'parents', ParentViewSet)
 router.register(r'teachers', TeacherViewSet)
 
+router.register(r'category', CategoryViewSet)
 router.register(r'courses', CourseViewSet)
 router.register(r'videos', VideoViewSet)
 router.register(r'pdfs', PDFViewSet)

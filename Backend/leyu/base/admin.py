@@ -4,6 +4,7 @@ from .models import *
 
 admin.site.register(Parent)
 admin.site.register(Child)
+admin.site.register(Category)
 admin.site.register(Course)
 admin.site.register(Video)
 admin.site.register(PDF)

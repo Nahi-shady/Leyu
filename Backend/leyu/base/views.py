@@ -22,6 +22,9 @@ class TeacherViewSet(viewsets.ModelViewSet):
 
 
 # API views for course, vidoes, pdfs, quize and enrollment and childporgress
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
