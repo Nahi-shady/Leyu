@@ -147,3 +147,62 @@ class ChildProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChildProgress
         fields = ['id', 'parent', 'enrollment']
+
+
+
+# Authentication
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password', 'first_name', 'last_name']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name']
+        )
+        return user
+
+class TeacherRegistrationSerializer(serializers.ModelSerializer):
+    user = UserRegistrationSerializer()
+
+    class Meta:
+        model = Teacher
+        fields = ['user', 'phone', 'address']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = UserRegistrationSerializer.create(UserRegistrationSerializer(), validated_data=user_data)
+        teacher = Teacher.objects.create(user=user, **validated_data)
+        return teacher
+
+class ChildRegistrationSerializer(serializers.ModelSerializer):
+    user = UserRegistrationSerializer()
+
+    class Meta:
+        model = Child
+        fields = ['user', 'parent', 'disability', 'phone', 'age']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = UserRegistrationSerializer.create(UserRegistrationSerializer(), validated_data=user_data)
+        child = Child.objects.create(user=user, **validated_data)
+        return child
+
+class ParentRegistrationSerializer(serializers.ModelSerializer):
+    user = UserRegistrationSerializer()
+
+    class Meta:
+        model = Parent
+        fields = ['user', 'phone', 'address']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = UserRegistrationSerializer.create(UserRegistrationSerializer(), validated_data=user_data)
+        parent = Parent.objects.create(user=user, **validated_data)
+        return parent

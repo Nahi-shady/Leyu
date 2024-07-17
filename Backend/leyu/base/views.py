@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from .models import Parent, Child
 from .serializers import *
 
@@ -48,3 +48,14 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
 class ChildProgressViewSet(viewsets.ModelViewSet):
     queryset = ChildProgress.objects.all()
     serializer_class = ChildProgressSerializer
+
+
+# Authentication
+class TeacherRegistrationView(generics.CreateAPIView):
+    serializer_class = TeacherRegistrationSerializer
+
+class ChildRegistrationView(generics.CreateAPIView):
+    serializer_class = ChildRegistrationSerializer
+
+class ParentRegistrationView(generics.CreateAPIView):
+    serializer_class = ParentRegistrationSerializer
